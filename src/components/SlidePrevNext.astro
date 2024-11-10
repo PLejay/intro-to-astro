@@ -57,7 +57,6 @@ const previousSlide =
       const { previousSlide, nextSlide } = this?.dataset;
 
       document.addEventListener("keydown", (event) => {
-        console.log("keydown");
         if (event.key === "ArrowRight" && nextSlide) {
           location.href = `/slides/${nextSlide}/`;
         } else if (event.key === "ArrowLeft" && previousSlide) {

@@ -12,6 +12,6 @@ export const ZERO_DIVISION_ERROR_MESSAGE = "Can't divide with 0";
 
 export const DEFAULT_CALCULATOR_STATE: CalculatorState = {
   sign: undefined,
-  value: 0,
-  result: 0,
+  value: undefined,
+  result: undefined,
 } as const;

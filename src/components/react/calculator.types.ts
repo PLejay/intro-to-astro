@@ -6,8 +6,8 @@ export type Sign = "+" | "-" | "X" | "/";
 
 export type CalculatorState = {
   sign: Sign | undefined;
-  value: number | string;
-  result: number | string;
+  value: number | undefined;
+  result: number | undefined;
   errorMessage?: string;
 };
 

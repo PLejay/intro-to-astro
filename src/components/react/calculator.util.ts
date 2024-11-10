@@ -1,3 +1,4 @@
+import type { StoredCalculation } from "../../calculatorStore";
 import { DEFAULT_CALCULATOR_STATE } from "./calculator.config";
 import type {
   CalculatorAction,
@@ -5,31 +6,26 @@ import type {
   Sign,
 } from "./calculator.types";
 
-export const numToLocaleString = (num: number): string =>
-  String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
-
 export const removeSpaces = (value: number | string) =>
   Number(value.toString().replace(/\s/g, ""));
 
 export const calculateResult = (
-  currentResult: number | string,
-  newValue: number | string,
+  currentResult: number,
+  newValue: number,
   sign: Sign,
 ) => {
-  const [formattedCurrentResult, formattedNewValue] = [
-    Number(removeSpaces(currentResult)),
-    Number(removeSpaces(newValue)),
-  ];
-
   switch (sign) {
     case "+":
-      return formattedCurrentResult + formattedNewValue;
+      return currentResult + newValue;
     case "-":
-      return formattedCurrentResult - formattedNewValue;
+      return currentResult - newValue;
     case "X":
-      return formattedCurrentResult * formattedNewValue;
-    case "/":
-      return formattedCurrentResult / formattedNewValue;
+      return currentResult * newValue;
+    case "/": {
+      if (newValue === 0) throw new Error("Can't divide by 0 oO");
+      const result = currentResult / newValue;
+      return Math.round(result * 100) / 100;
+    }
   }
 };
 
@@ -39,8 +35,8 @@ const getStateOnInvertClick = (state: CalculatorState): CalculatorState => {
   const { value, result } = state;
   return {
     ...state,
-    value: value ? numToLocaleString(removeSpaces(value) * -1) : 0,
-    result: result ? numToLocaleString(removeSpaces(result) * -1) : 0,
+    value: value ? value * -1 : undefined,
+    result: (result ?? 0) * -1,
     sign: undefined,
   };
 };
@@ -59,7 +55,7 @@ const getStateOnPercentageClick = (state: CalculatorState): CalculatorState => {
 
 const getStateOnEqualClick = (state: CalculatorState): CalculatorState => {
   const { value, result, sign } = state;
-  if (value === undefined || !sign) return state;
+  if (value === undefined || result === undefined || !sign) return state;
   if (value.toString() === "0" && sign === "/")
     return {
       ...DEFAULT_CALCULATOR_STATE,
@@ -67,7 +63,7 @@ const getStateOnEqualClick = (state: CalculatorState): CalculatorState => {
     };
   return {
     ...DEFAULT_CALCULATOR_STATE,
-    result: numToLocaleString(calculateResult(result, value, sign)),
+    result: calculateResult(result, value, sign),
   };
 };
 
@@ -76,12 +72,15 @@ const getStateOnSignClick = (
   sign: Sign,
 ): CalculatorState => {
   const { value, result } = state;
+  console.log("🚀 ~ result:", result);
+  console.log("🚀 ~ value:", value);
 
   const getNewResult = () => {
     if (value === undefined) return result;
     if (result === undefined) return value;
-    return numToLocaleString(calculateResult(result, value, sign));
+    return calculateResult(result, value, sign);
   };
+
   return {
     ...state,
     sign,
@@ -90,9 +89,10 @@ const getStateOnSignClick = (
   };
 };
 
+// TODO: fix/implement this
 const getStateOnCommaClick = (state: CalculatorState): CalculatorState => ({
   ...state,
-  value: state.value.toString().includes(".") ? state.value : state.value + ".",
+  // value: state.value.toString().includes(".") ? state.value : state.value + ".",
 });
 
 const getStateOnNumClick = (
@@ -100,15 +100,13 @@ const getStateOnNumClick = (
   num: number,
 ): CalculatorState => {
   const { value, sign, result } = state;
-  if (removeSpaces(value).toString().length >= 16) return state;
+  if (value && value.toString().length >= 16) return state;
 
   return {
     ...state,
-    value:
-      removeSpaces(value) % 1 === 0 && !value.toString().includes(".")
-        ? numToLocaleString(Number(removeSpaces(value) + num))
-        : numToLocaleString(Number(value) + num),
-    result: sign ? result : 0,
+    // TODO: fix this to account for decimals
+    value: value !== undefined ? value * 10 + num : num,
+    result: sign ? result : undefined,
   };
 };
 
@@ -117,6 +115,7 @@ const getStateOnNumClick = (
 export const calculatorReducer = (
   state: CalculatorState,
   action: CalculatorAction,
+  updateStoredCalculations: (calculation: StoredCalculation) => void,
 ): CalculatorState => {
   switch (action.type) {
     case "RESET":
@@ -129,8 +128,24 @@ export const calculatorReducer = (
           return getStateOnInvertClick(state);
         case "%":
           return getStateOnPercentageClick(state);
-        case "=":
-          return getStateOnEqualClick(state);
+        case "=": {
+          const newState = getStateOnEqualClick(state);
+          console.log("🚀 ~ newState:", newState);
+          if (
+            state.result !== undefined &&
+            state.value !== undefined &&
+            state.sign &&
+            newState.result !== undefined
+          ) {
+            updateStoredCalculations({
+              firstNumber: state.result,
+              secondNumber: state.value,
+              operator: state.sign,
+              result: newState.result,
+            });
+          }
+          return newState;
+        }
         case "/":
         case "X":
         case "-":

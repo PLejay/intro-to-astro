@@ -2,10 +2,13 @@ import { useEffect, useRef } from "react";
 import "./Screen.css";
 
 type ScreenProps = {
-  value: number | string;
+  value: number | undefined;
 };
 
 const Screen = ({ value }: ScreenProps) => {
+  const numToLocaleString = (num: number): string =>
+    String(num).replace(/(?<!\..*)(\d)(?=(?:\d{3})+(?:\.|$))/g, "$1 ");
+
   const textRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
@@ -28,7 +31,7 @@ const Screen = ({ value }: ScreenProps) => {
   return (
     <div className="screen">
       <p className="responsive-text" ref={textRef}>
-        {value}
+        {value ? numToLocaleString(value) : 0}
       </p>
     </div>
   );

@@ -1,9 +1,32 @@
 ---
 import CalculatorComponent from "../components/react/Calculator";
+import CalculationDisplay from "../components/svelte/CalculationDisplay.svelte";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Calculator">
-  <h1>Calculator</h1>
-  <CalculatorComponent client:load />
+  <div class="calculator-page">
+    <h1 class="page-title">Calculator</h1>
+    <section class="page-body">
+      <CalculatorComponent client:load />
+      <CalculationDisplay client:load />
+    </section>
+  </div>
 </Layout>
+
+<style>
+  .calculator-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .page-title {
+    font-size: var(--text-3xl);
+  }
+
+  .page-body {
+    display: flex;
+    gap: 6rem;
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import HtmlHead from "../components/HtmlHead.astro";
+import LinkToHome from "../components/LinkToHome.astro";
 
 type Props = {
   title: string;
@@ -15,6 +16,7 @@ const { title, description } = Astro.props;
     <HtmlHead title={title} description={description} />
   </head>
   <body>
+    <LinkToHome />
     <main>
       <slot />
     </main>

@@ -1,0 +1,51 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content";
+import SlidePrevNext from "../../components/SlidePrevNext.astro";
+import Layout from "../../layouts/Layout.astro";
+
+type Props = {
+  entry: CollectionEntry<"slides">;
+};
+
+export async function getStaticPaths() {
+  const work = await getCollection("slides");
+  return work.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { title } = entry.data;
+---
+
+<Layout title={title}>
+  <div class="slide">
+    <h1 class="slide-header">{title}</h1>
+    <section class="slide-body">
+      <Content />
+    </section>
+    <SlidePrevNext />
+  </div>
+</Layout>
+
+<style>
+  .slide {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: min(50vw, 100rem);
+    padding-block: 10rem;
+    gap: 4rem;
+  }
+
+  .slide-header {
+    font-size: var(--text-3xl);
+  }
+
+  .slide-body {
+    font-size: var(--text-lg);
+    line-height: 1.5;
+  }
+</style>

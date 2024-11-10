@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+
+const getSlideNumber = (slug: `slide-${number}`) =>
+  Number(slug.split("slide-")[1]);
+
+const slides = (await getCollection("slides")).sort(
+  (a, b) => getSlideNumber(a.slug) - getSlideNumber(b.slug),
+);
+
+const currentSlideIndex = slides.findIndex(
+  (slide) => slide.slug == Astro.params.slug,
+);
+const nextSlide =
+  currentSlideIndex + 1 === slides.length
+    ? undefined
+    : slides[currentSlideIndex + 1]?.slug;
+const previousSlide =
+  currentSlideIndex === 0 ? undefined : slides[currentSlideIndex - 1]?.slug;
+---
+
+<slide-prev-next
+  data-previous-slide={previousSlide}
+  data-next-slide={nextSlide}
+  class:list={["slide-prev-next", { hidden: !(previousSlide || nextSlide) }]}
+>
+  <a
+    href={`/slides/${previousSlide}/`}
+    class:list={["prev-slide", "is-icon-only", { hidden: !previousSlide }]}
+  >
+    <i class="ri-arrow-left-s-line ri-3x"></i>
+  </a>
+  <a
+    href={`/slides/${nextSlide}/`}
+    class:list={["next-slide", "is-icon-only", { hidden: !nextSlide }]}
+  >
+    <i class="ri-arrow-right-s-line ri-3x"></i>
+  </a>
+</slide-prev-next>
+
+<style>
+  .slide-prev-next {
+    position: absolute;
+    top: 50%;
+    bottom: 50%;
+    left: 0;
+    width: 100vw;
+    display: flex;
+    padding-inline: 3rem;
+    justify-content: space-between;
+  }
+
+  .hidden {
+    visibility: hidden;
+  }
+</style>
+
+<script>
+  class PrevNextNav extends HTMLElement {
+    connectedCallback() {
+      // Converts the values back to camelCase (were converted to kebab-case in the HTML)
+      const { previousSlide, nextSlide } = this?.dataset;
+      console.log(
+        "🚀 ~ PrevNextNav ~ connectedCallback ~ this?.dataset:",
+        this?.dataset,
+      );
+      console.log(
+        "🚀 ~ PrevNextNav ~ connectedCallback ~ nextSlide:",
+        nextSlide,
+      );
+
+      document.addEventListener("keydown", (event) => {
+        console.log("keydown");
+        if (event.key === "ArrowRight" && nextSlide) {
+          console.log("arrowRight pressed");
+          location.href = `/slides/${nextSlide}/`;
+        } else if (event.key === "ArrowLeft" && previousSlide) {
+          location.href = `/slides/${previousSlide}/`;
+        }
+      });
+    }
+  }
+
+  customElements.define("slide-prev-next", PrevNextNav);
+</script>

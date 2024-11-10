@@ -1,0 +1,53 @@
+@import "css-reset.css" layer(reset);
+
+:root {
+  /* Astro defaults, consider changing */
+  --bg-colour: #0e1024;
+  --text-colour: #f9efe5;
+  --accent-colour: #ff3cc7;
+  --accent: 136, 58, 234;
+  --accent-light: 224, 204, 250;
+  --accent-dark: 49, 10, 101;
+  --accent-gradient: linear-gradient(
+    45deg,
+    rgb(var(--accent)),
+    rgb(var(--accent-light)) 30%,
+    white 60%
+  );
+
+  /* Text sizes */
+  --text-lg: 1.25rem;
+  --text-xl: 1.65rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 3rem;
+  --text-4xl: 3.75rem;
+  --text-5xl: 4.5rem;
+}
+
+html {
+  font-family: system-ui, sans-serif;
+  background: var(--bg-colour);
+  color: white;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  color: white;
+
+  &:hover {
+    color: var(--accent-colour);
+  }
+
+  &.is-icon-only {
+    text-decoration: none;
+  }
+
+  & > i {
+    outline: none;
+    /* border: 1px solid pink; */
+  }
+}

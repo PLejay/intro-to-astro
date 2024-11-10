@@ -3,14 +3,22 @@
 :root {
   /* Astro defaults, consider changing */
   --bg-colour: #0e1024;
+  --blue-700: #394193;
+  --blue-800: #2e3476;
+  --blue-900: #222758;
+  --green-600: #066689;
+  --green-700: #044962;
   --text-colour: #f9efe5;
-  --accent-colour: #ff3cc7;
-  --accent: 136, 58, 234;
-  --accent-light: 224, 204, 250;
-  --accent-dark: 49, 10, 101;
+  --pink-100: #ff99e2;
+  --pink-300: #ff3cc7;
+  --pink-500: #f500af;
+  --pink-800: #a30075;
+  --accent-colour: var(--pink-300);
+  --accent-light: var(--pink-100);
+  --accent-dark: var(--pink-800);
   --accent-gradient: linear-gradient(
     45deg,
-    rgb(var(--accent)),
+    rgb(var(--accent-colour)),
     rgb(var(--accent-light)) 30%,
     white 60%
   );

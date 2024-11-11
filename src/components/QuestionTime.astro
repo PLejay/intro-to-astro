@@ -1,0 +1,33 @@
+---
+
+---
+
+<div class="question-time-container">
+  <h1>Question Time</h1>
+</div>
+
+<style>
+  @keyframes drift {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 200% 200%;
+    }
+  }
+
+  .question-time-container {
+    /* background-color: var(--blue-400); */
+  }
+  h1 {
+    text-align: center;
+    color: transparent;
+    font-size: 8rem;
+    padding: 1rem;
+    background-image: url("/starry-sky.jpg");
+    background-clip: text;
+    background-position: center;
+    animation: drift 50s linear infinite;
+    -webkit-text-stroke: 1px var(--pink-300); /* 2px black outline */
+  }
+</style>

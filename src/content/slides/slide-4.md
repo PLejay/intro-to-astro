@@ -1,9 +1,11 @@
 ---
-title: Server-first, with hydration
+title: Content collections
 ---
 
-By default, all Astro components are __pre-rendered at build time__, with __zero JavaScript sent to the browser__.
+Astro supports writing content in __markdown files__ (or .mdx files for dynamic content) that can be imported within components and will be rendered into HTML.
 
-Additional tooling can add __server-side rendering__ or __client-side interactivity__ using JS/TS or any popular JS framework.
+Files can be organised into __collections__ with standardised formats, metadata and type checking.
 
-Astro components are __composable__ and __reusable__, similar to other JS frameworks. They accept props and child elements ("slots")
+> These slides are written in markdown
+
+Each file will generate its own page if placed within the `src/pages` directory or using Astro methods in a `[...slug]` page

@@ -1,8 +1,8 @@
 @import "css-reset.css" layer(reset);
 
 :root {
-  /* Astro defaults, consider changing */
   --bg-colour: #0e1024;
+  --blue-400: #7b8dcc;
   --blue-500: #5d66c0;
   --blue-600: #454eb0;
   --blue-700: #394193;

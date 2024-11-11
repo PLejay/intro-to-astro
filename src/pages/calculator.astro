@@ -8,8 +8,11 @@ import Layout from "../layouts/Layout.astro";
 <Layout title="Calculator">
   <div class:list={["calculator-page", "component-wrapper"]}>
     <header>
-      <h1 class="page-title">Calculator</h1>
-      <Toggle toggleId="calculator-toggle" />
+      <div class="title-row">
+        <h1 class="page-title">Calculator</h1>
+        <Toggle toggleId="calculator-toggle" />
+      </div>
+      <h3>A demonstration of Astro islands</h3>
     </header>
     <section class="page-body">
       <div class:list={["component-wrapper", "react-component"]}>
@@ -56,13 +59,19 @@ import Layout from "../layouts/Layout.astro";
   .calculator-page {
     display: flex;
     flex-direction: column;
-    gap: 3rem;
+    gap: 4rem;
   }
 
-  header {
+  .title-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: -1rem;
+  }
+
+  header h3 {
+    font-style: italic;
+    color: var(--blue-400);
   }
 
   .page-title {

@@ -72,8 +72,6 @@ const getStateOnSignClick = (
   sign: Sign,
 ): CalculatorState => {
   const { value, result } = state;
-  console.log("🚀 ~ result:", result);
-  console.log("🚀 ~ value:", value);
 
   const getNewResult = () => {
     if (value === undefined) return result;
@@ -130,7 +128,6 @@ export const calculatorReducer = (
           return getStateOnPercentageClick(state);
         case "=": {
           const newState = getStateOnEqualClick(state);
-          console.log("🚀 ~ newState:", newState);
           if (
             state.result !== undefined &&
             state.value !== undefined &&

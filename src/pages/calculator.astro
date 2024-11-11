@@ -1,32 +1,123 @@
 ---
 import CalculatorComponent from "../components/react/Calculator";
 import CalculationDisplay from "../components/svelte/CalculationDisplay.svelte";
+import Toggle from "../components/Toggle.astro";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="Calculator">
-  <div class="calculator-page">
-    <h1 class="page-title">Calculator</h1>
+  <div class:list={["calculator-page", "component-wrapper"]}>
+    <header>
+      <h1 class="page-title">Calculator</h1>
+      <Toggle toggleId="calculator-toggle" />
+    </header>
     <section class="page-body">
-      <CalculatorComponent client:load />
-      <CalculationDisplay client:load />
+      <div class:list={["component-wrapper", "react-component"]}>
+        <p class="explanation explanation-top">This was built in React...</p>
+        <CalculatorComponent client:load />
+      </div>
+      <div class:list={["component-wrapper", "svelte-component"]}>
+        <p class="explanation explanation-top">
+          ...But this was built in Svelte
+        </p>
+        <CalculationDisplay client:load />
+      </div>
     </section>
+    <p class="explanation explanation-bottom">
+      ...and this whole page is an Astro component
+    </p>
   </div>
 </Layout>
+
+<script>
+  const toggleSwitch = document.getElementById("toggle-switch");
+  const explanationElements = document.querySelectorAll(
+    ".explanation",
+  ) as NodeListOf<HTMLElement>;
+  const componentWrapperElements = document.querySelectorAll(
+    ".component-wrapper",
+  ) as NodeListOf<HTMLElement>;
+
+  const toggleShowExplanations = () => {
+    explanationElements.forEach((element) => {
+      element.classList.toggle("show");
+    });
+    componentWrapperElements.forEach((element) => {
+      element.classList.toggle("show");
+    });
+  };
+
+  toggleSwitch?.addEventListener("change", (event) => {
+    toggleShowExplanations();
+  });
+</script>
 
 <style>
   .calculator-page {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 3rem;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .page-title {
-    font-size: var(--text-3xl);
+    font-size: var(--text-4xl);
   }
 
   .page-body {
     display: flex;
-    gap: 6rem;
+    gap: 8rem;
+  }
+
+  .component-wrapper {
+    position: relative;
+    padding: 2rem;
+    border: 2px solid;
+    border-radius: 4px;
+    border-color: transparent;
+    transition: border-color 0.2s ease;
+  }
+
+  .component-wrapper.show {
+    border-color: inherit;
+  }
+
+  .react-component {
+    color: #00d8ff;
+  }
+
+  .svelte-component {
+    color: #aa1e1e;
+  }
+
+  .explanation {
+    font-size: var(--text-lg);
+    text-align: right;
+    position: absolute;
+    right: 0;
+    font-family: Kalam;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .explanation.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .explanation-top {
+    top: 0;
+    transform: translateY(-110%);
+  }
+
+  .explanation-bottom {
+    bottom: 0;
+    transform: translateY(110%);
   }
 </style>

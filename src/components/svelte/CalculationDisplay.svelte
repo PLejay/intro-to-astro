@@ -6,13 +6,6 @@
   <header>
     <h2>History</h2>
   </header>
-  <!-- <ul>
-    {#each $storedResults as result}
-    <li>
-      {result}
-    </li>
-    {/each}
-  </ul> -->
   <ul>
     {#each $storedCalculations as calculation, calcIndex}
       <li>
@@ -24,8 +17,15 @@
             {calculation.result}
           </strong>
         </p>
-        <button class="remove-calculation" on:click={() => storedCalculations.set($storedCalculations.filter((_,i) => i !== calcIndex))} aria-label="remove">
-              <i class="ri-delete-bin-line ri-xs"></i>
+        <button
+          class="remove-calculation"
+          on:click={() =>
+            storedCalculations.set(
+              $storedCalculations.filter((_, i) => i !== calcIndex),
+            )}
+          aria-label="remove"
+        >
+          <i class="ri-delete-bin-line ri-xs"></i>
         </button>
       </li>
     {/each}
@@ -35,12 +35,14 @@
 <style>
   .calculation-display {
     min-width: 40ch;
+    height: 100%;
     background-color: var(--blue-800);
     border-radius: 8px;
+    color: var(--text-colour);
   }
 
   header {
-    background-color: var(--blue-700);
+    background-color: var(--blue-800);
     padding-inline: 2rem;
     padding-block: 1rem;
     border-radius: 8px 8px 0 0;

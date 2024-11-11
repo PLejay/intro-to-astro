@@ -1,0 +1,19 @@
+/* Having to style here because of astro css scoping */
+/* https: //github.com/withastro/docs/issues/3485 */
+
+section p {
+  margin-bottom: 2em;
+}
+
+section ul {
+  margin-top: -1.5em;
+}
+
+/* section ol li,
+section ul li {
+  margin-bottom: -1em;
+} */
+
+section:has(img) {
+  width: 60%;
+}

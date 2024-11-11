@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from "astro:content";
 import SlidePrevNext from "../../components/SlidePrevNext.astro";
 import Layout from "../../layouts/Layout.astro";
+import "../../styles/slide.css";
 
 type Props = {
   entry: CollectionEntry<"slides">;
@@ -35,17 +36,19 @@ const { title } = entry.data;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    max-width: min(50vw, 100rem);
+    align-items: start;
+    /* max-width: min(50vw, 100rem); */
+    width: 70vw;
     padding-block: 10rem;
     gap: 4rem;
   }
 
   .slide-header {
-    font-size: var(--text-3xl);
+    font-size: var(--text-4xl);
   }
 
   .slide-body {
-    font-size: var(--text-lg);
+    font-size: var(--text-xl);
     line-height: 1.5;
   }
 </style>

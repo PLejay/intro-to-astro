@@ -1,0 +1,25 @@
+---
+import { Image } from "astro:assets";
+
+import fileScreenshot from "../../public/astro-file-example.png";
+
+const width = 1086;
+const height = width * 1.317;
+---
+
+<Image
+  src={fileScreenshot}
+  alt="Screenshot of a .astro file"
+  width={width}
+  height={height}
+/>
+
+<style>
+  img {
+    transform: scale(0.5);
+    transform-origin: top right;
+    position: absolute;
+    top: 11rem;
+    right: 10rem;
+  }
+</style>

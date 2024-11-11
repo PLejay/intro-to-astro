@@ -1,0 +1,17 @@
+---
+title: Anatomy of an astro file
+---
+import AnatomyOfAFile from '../../components/AnatomyOfAFile.astro'
+
+<AnatomyOfAFile />
+
+A basic .astro file consists of specific sections:
+
+1. __frontmatter__: javascript (or typescript) that runs only in the server, always behind a code fence (`---`)
+
+2. __component template__: determines the html output. Contains plain html but can also include:
+
+   - __other astro components__
+   - __javascript expressions__
+   - __\<style> tags__: css scoped to the component
+   - __\<script> tags__: javascript that runs in the client
